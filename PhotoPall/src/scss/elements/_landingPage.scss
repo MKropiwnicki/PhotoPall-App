@@ -1,0 +1,513 @@
+@use '../settings/variables';
+@use '../settings/colors';
+
+
+html {
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+.main-container {
+  background: colors.$main;
+  inset: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  .header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5rem;
+    align-items: center;
+    z-index: 99;
+    top: 0px;
+    width: 100%;
+    height: 80px;
+    background: rgba( 0, 0, 0, 0.05);
+
+    .logo-xs {
+      font-family: variables.$DaysOne;
+      color: white;
+      font-size: 2rem;
+
+    }
+
+    .nav {
+      width: 20%;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+
+      .btn {
+        padding: 10px 15px;
+        border-radius: 40px;
+        border: none;
+        font-family: variables.$Exo;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: 0.2s ease-in-out;
+      }
+
+      .login-btn {
+        background: white;
+        color: colors.$main;
+
+
+        &:hover {
+          background: colors.$accent;
+          color: colors.$main;
+          box-shadow:  0 0 20px rgba(250, 106, 20, 1);
+          cursor: pointer;
+        }
+      }
+
+      .register-btn {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+
+
+        &:hover {
+          background: colors.$accent;
+          border: none;
+          color: colors.$main;
+          box-shadow:  0 0 20px rgba(250, 106, 20, 1);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .hero-text-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 25vh;
+    bottom: 0px;
+    background: colors.$main;
+    z-index: 25;
+    padding: 0 15rem;
+
+    .letter {
+      overflow: visible;
+      stroke: rgba(255, 255, 255, 1);
+      stroke-width: 1;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+
+    }
+
+    .hero-text {
+      width: 500px;
+      height: 300px;
+    }
+  }
+
+  .sky, .stars, .far-clouds, .moon, .small-cloud, .medium-cloud, .big-cloud, .mt-far, .mt-close, .balloon-small, .balloon-big, .foreground {
+    inset: 0;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: auto;
+  }
+
+  .sky {
+    background-image: url("/sky.png");
+    z-index: 11;
+  }
+
+  .stars {
+    background-image: url("/stars.png");
+    z-index: 12;
+  }
+
+  .far-clouds {
+    background-image: url("/far-clouds.png");
+    z-index: 13;
+  }
+
+  .moon {
+    background-image: url("/moon.png");
+    z-index: 14;
+  }
+
+  .small-cloud {
+    background-image: url("/small-cloud.png");
+    z-index: 24;
+  }
+
+  .medium-cloud {
+    background-image: url("/medium-cloud.png");
+    z-index: 16;
+  }
+
+  .big-cloud {
+    background-image: url("/big-cloud.png");
+    z-index: 17;
+  }
+
+  .mt-far {
+    background-image: url("/mt-far.png");
+    z-index: 18;
+  }
+
+  .mt-close {
+    background-image: url("/mt-close.png");
+    z-index: 19;
+  }
+
+  .balloon-small {
+    background-image: url("/balloon-small.png");
+    z-index: 23;
+  }
+
+  .balloon-big {
+    background-image: url("/balloon-big.png");
+    z-index: 22;
+  }
+
+  .foreground {
+    background-image: url("/foreground.png");
+    z-index: 21;
+  }
+
+
+  .success, .error, .no-user {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    z-index: 101;
+    left: 50%;
+    top: 380px;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 20vh;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    h2 {
+      font-family: variables.$Exo;
+      font-size: 1.25rem;
+      text-align: center;
+      font-weight: 400;
+      color: white;
+    }
+
+    .dismiss-btn {
+      padding: 1rem 2rem;
+      width: 100%;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: colors.$main;
+      font-size: 1rem;
+      color: white;
+      font-weight: 400;
+      font-family: variables.$Exo;
+      opacity: 80%;
+      transition: 0.2s ease-in-out;
+
+      &:hover {
+        background: white;
+        color: colors.$main;
+        box-shadow:  0 0 20px rgba(0, 0, 0, 1);
+      }
+    }
+  }
+
+  .login-modal-container {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    z-index: 100;
+    left: 50%;
+    top: 340px;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 55vh;
+
+    .close-btn {
+      position: relative;
+      width: 1.5rem;
+      height: 1.5rem;
+      left: 90%;
+      top: 10px;
+      cursor: pointer;
+
+      svg {
+        font-size: 1.5rem;
+        color: colors.$main;
+
+        &:hover {
+          color: colors.$accent;
+        }
+      }
+    }
+
+    .login-modal {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: variables.$Exo;
+
+
+      .modal-title {
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+      }
+
+      form {
+        display: block;
+        margin-bottom: 2rem;
+
+        input {
+          position: relative;
+          width: 100%;
+          color: white;
+          background: transparent;
+          font-family: variables.$Exo;
+          border: none;
+          border-bottom: 1px solid white;
+          margin: 1rem auto 2rem auto;
+          padding: 5px;
+        }
+
+        svg {
+          margin-left: -20px;
+          padding-bottom: 5px;
+        }
+
+        .submit-btn {
+          padding: 1.5rem 3rem;
+          width: 100%;
+          margin-top: 1rem;
+          border: none;
+          border-radius: 10px;
+          background: colors.$main;
+          font-size: 1rem;
+          color: white;
+          font-weight: 400;
+          font-family: variables.$Exo;
+          opacity: 80%;
+          transition: 0.2s ease-in-out;
+
+          &:hover {
+            background: white;
+            color: colors.$main;
+            box-shadow:  0 0 20px rgba(0, 0, 0, 1);
+          }
+        }
+
+      }
+
+      p {
+        text-align: center;
+
+        span {
+          font-weight: 800;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .register-modal-container {
+
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    z-index: 100;
+    left: 50%;
+    top: 365px;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    min-height: 60vh;
+
+    .close-btn {
+      position: relative;
+      width: 1.5rem;
+      height: 1.5rem;
+      left: 90%;
+      top: 10px;
+      cursor: pointer;
+
+      svg {
+        font-size: 1.5rem;
+        color: colors.$main;
+
+        &:hover {
+          color: colors.$accent;
+        }
+      }
+    }
+
+    .register-modal {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: variables.$Exo;
+
+
+      .modal-title {
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      form {
+        display: block;
+        margin-bottom: 2rem;
+
+        input {
+          position: relative;
+          width: 100%;
+          color: white;
+          background: transparent;
+          font-family: variables.$Exo;
+          border: none;
+          border-bottom: 1px solid white;
+          margin: 1rem auto;
+          padding: 5px;
+        }
+
+        .form-validation {
+          text-align: center;
+          font-weight: 600;
+          color: colors.$accent;
+          //color: red;
+          text-shadow: 0 0 2px black;
+          //text-shadow: 0 0 2px white;
+        }
+
+        svg {
+          margin-left: -20px;
+          padding-bottom: 5px;
+        }
+
+        .submit-btn {
+          padding: 1.5rem 3rem;
+          width: 100%;
+          margin-top: 2rem;
+          border: none;
+          border-radius: 10px;
+          background: colors.$main;
+          font-size: 1rem;
+          color: white;
+          font-weight: 400;
+          font-family: variables.$Exo;
+          opacity: 80%;
+          transition: 0.2s ease-in-out;
+
+          &:hover {
+            background: white;
+            color: colors.$main;
+            box-shadow:  0 0 20px rgba(0, 0, 0, 1);
+          }
+        }
+      }
+
+      p {
+        text-align: center;
+
+        span {
+          font-weight: 800;
+          cursor: pointer;
+        }
+      }
+
+    }
+  }
+
+}
+
+.hero {
+  background-image: url("/heroBg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    font-family: variables.$DaysOne;
+    font-size: 4rem;
+    color: white;
+    padding-bottom: 1rem;
+  }
+
+  .card-container {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    font-family: variables.$Exo;
+
+    .card {
+      width: 25%;
+      height: 60vh;
+      background: rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+
+
+      h2 {
+        margin: 0 auto;
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
