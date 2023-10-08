@@ -1,8 +1,8 @@
 import React from "react";
 
-export const ActionTile = () => {
+export const ActionTile = ({goToGear}) => {
     return(
-        <div className='action-tile'>
+        <div className='action-tile' onClick={goToGear}>
 
         </div>
     )

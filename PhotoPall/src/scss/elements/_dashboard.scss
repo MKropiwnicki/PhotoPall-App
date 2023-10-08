@@ -30,56 +30,42 @@
       font-size: 2rem;
     }
 
-    .nav {
-      width: auto;
-      margin-right: 2.7rem;
+    .menu-container {
+      width: 50%;
+      height: 100%;
+      align-self: flex-start;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: flex-end;
+      margin-right: 0.8rem;
       gap: 1rem;
 
-      .btn {
-        padding: 15px 20px;
-        border-radius: 50px;
-        border: none;
-        font-family: variables.$Exo;
-        font-weight: 700;
-        font-size: 1rem;
-        transition: 0.2s ease-in-out;
-      }
 
-      .user-btn {
+      .nav-btn {
         background: transparent;
-        font-size: 1.25rem;
+        border: none;
+        color: white;
+        font-family: variables.$Exo;
+        font-weight: 300;
+        font-size: 0.7rem;
+        padding: 10px;
+        border-bottom: 2px solid transparent;
+
+        svg {
+          font-size: 1.4rem;
+          margin-bottom: 1rem;
+        }
 
 
         &:hover {
-          background: colors.$accent;
-          color: colors.$main;
-          box-shadow:  0 0 20px rgba(250, 106, 20, 1);
+          border-bottom: 2px solid colors.$accent;
           cursor: pointer;
         }
 
-        svg{
-          color: white;
-        }
       }
 
       .logout-btn {
-        background: transparent;
-        font-size: 1.25rem;
-
-
-        &:hover {
-          background: colors.$accent;
-          border: none;
-          color: colors.$main;
-          box-shadow:  0 0 20px rgba(250, 106, 20, 1);
-          cursor: pointer;
-        }
-
-        svg{
-          color: white;
-        }
+        color: colors.$accent;
       }
     }
   }
