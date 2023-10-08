@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import {UserAuth} from "../context/AuthContext.jsx";
 import {AnimatePresence, easeInOut, motion} from "framer-motion";
-
+import { db } from '../firebase';
+import { setDoc, doc } from "firebase/firestore";
+import { auth } from "../firebase";
 
 
 export const RegisterModal = ({toggleModal, toggleLogin, openSuccess, openError, isVisible, title}) => {
@@ -18,6 +20,24 @@ export const RegisterModal = ({toggleModal, toggleLogin, openSuccess, openError,
     const [error, setError] = useState('');
     const {createUser} = UserAuth();
 
+    //tworzenie dokumentu dla usera, do którego tylko on będzie miał dostęp. Reguły dostępu zapisane są w firestore
+    const createNewUserDocument = async (uid, email) => {
+        const userData = {
+            gear: [],
+            kits: [],
+            photoSessions: [],
+            userId: uid,
+            email,
+        };
+
+        try {
+            await setDoc(doc(db, "users", uid), userData)
+            return true
+        } catch (e) {
+            console.error("Error adding document: ", e);
+            return false
+        }
+    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -29,7 +49,11 @@ export const RegisterModal = ({toggleModal, toggleLogin, openSuccess, openError,
         if(isEmailValid && isPasswordValid && passwordsMatch) {
             try{
                 await createUser(email, password);
-                isRegOk = true
+                const registrationSuccessful = await createNewUserDocument(auth.currentUser.uid, email);
+                if (registrationSuccessful) {
+                    console.log(auth.currentUser.uid)
+                    isRegOk = true;
+                }
             } catch (e) {
                 setError(e.message);
                 console.log(e.message);
