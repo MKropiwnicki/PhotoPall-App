@@ -142,31 +142,31 @@ export const AddEventBody = () => {
 
     }
 
-    const getKits = async () => {
-
-        if (!auth.currentUser) {
-            return;
-        }
-
-        const kitsQuery = query(collection(db, 'users', auth.currentUser.uid, 'kits'));
-
-
-        try {
-            const querySnapshot = await getDocs(kitsQuery);
-            const kitsArr = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const name = data.name;
-
-                kitsArr.push({ id: doc.id, name});
-            });
-            setKitsData(kitsArr);
-        } catch (error) {
-            console.error("Error fetching sessions:", error);
-        }
-
-
-    }
+    // const getKits = async () => {
+    //
+    //     if (!auth.currentUser) {
+    //         return;
+    //     }
+    //
+    //     const kitsQuery = query(collection(db, 'users', auth.currentUser.uid, 'kits'));
+    //
+    //
+    //     try {
+    //         const querySnapshot = await getDocs(kitsQuery);
+    //         const kitsArr = [];
+    //         querySnapshot.forEach((doc) => {
+    //             const data = doc.data();
+    //             const name = data.name;
+    //
+    //             kitsArr.push({ id: doc.id, name});
+    //         });
+    //         setKitsData(kitsArr);
+    //     } catch (error) {
+    //         console.error("Error fetching sessions:", error);
+    //     }
+    //
+    //
+    // }
 
     // const handleInfo = async (e) => {
     //     e.preventDefault();
@@ -242,7 +242,7 @@ export const AddEventBody = () => {
 
                                         <label htmlFor="event-select">Choose an event type:</label>
                                         <select onChange={(e) => setType(e.target.value)} name="events" id="event-select">
-                                            <option value="">Event type</option>
+                                            <option value="">Event type:</option>
                                             <option value="wedding">Wedding</option>
                                             <option value="model session">Model session</option>
                                             <option value="wildlife">Wildlife</option>

@@ -37,216 +37,216 @@ export const AddGearBody = () => {
     const [tripodsData, setTripodsData] = useState([]);
     const [filtersData, setFiltersData] = useState([]);
 
-    useEffect(() => {
-        const fetchGear = async () => {
-            try {
-                await getGear();
-            } catch (error) {
-                console.error("Error fetching gear:", error);
-            }
-        };
-        fetchGear();
-    }, [cameraBrand, cameraModel, lensBrand, lensModel, tripodBrand, tripodModel, filterBrand, filterModel]);
-
-
-    const toggleEventModal = () => {
-        setActionModal(!actionModal);
-    }
-
-    const toggleKitModal = () => {
-        setKitModal(!kitModal);
-    }
-
-
-    const handleCamera = async (e) => {
-        e.preventDefault();
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const camerasCollectionRef = collection(userDocRef, "cameras");
-        console.log(camerasCollectionRef);
-
-        const newCamera = {
-            cameraBrand: cameraBrand,
-            cameraModel: cameraModel
-        };
-
-        try {
-            await addDoc(camerasCollectionRef, newCamera)
-            setCameraBrand('');
-            setCameraModel('');
-            setActionModal(true)
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
-
-    const handleLens = async (e) => {
-        e.preventDefault();
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const lensesCollectionRef = collection(userDocRef, "lenses");
-        console.log(lensesCollectionRef);
-
-        const newLens = {
-            lensBrand: lensBrand,
-            lensModel: lensModel
-        };
-
-        try {
-            await addDoc(lensesCollectionRef, newLens)
-            setLensBrand('');
-            setLensModel('');
-            setActionModal(true)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const handleTripod = async (e) => {
-        e.preventDefault();
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const tripodsCollectionRef = collection(userDocRef, "tripods");
-        console.log(tripodsCollectionRef);
-
-        const newTripod = {
-            tripodBrand: tripodBrand,
-            tripodModel: tripodModel
-        };
-
-        try {
-            await addDoc(tripodsCollectionRef, newTripod)
-            setTripodBrand('');
-            setTripodModel('');
-            setActionModal(true)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const handleFilter = async (e) => {
-        e.preventDefault();
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const filtersCollectionRef = collection(userDocRef, "filters");
-        console.log(filtersCollectionRef);
-
-        const newFilter = {
-            filterBrand: filterBrand,
-            filterModel: filterModel
-        };
-
-        try {
-            await addDoc(filtersCollectionRef, newFilter)
-            setFilterBrand('');
-            setFilterModel('');
-            setActionModal(true)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const handleKit = async (e) => {
-        e.preventDefault();
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const filtersCollectionRef = collection(userDocRef, "kits");
-        console.log(filtersCollectionRef);
-
-        const newKit = {
-            name: kitName,
-            cameras: kitCameras,
-            lenses: kitLenses,
-            tripods: kitTripods,
-            filters: kitFilters
-        };
-
-        try {
-            await addDoc(filtersCollectionRef, newKit)
-            setKitName('');
-            setKitCameras('');
-            setKitLenses('');
-            setKitTripods('');
-            setKitFilters('');
-            setKitModal(true)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getGear = async () => {
-
-        if (!auth.currentUser) {
-                    return;
-    }
-
-        const cameraQuery = query(collection(db, 'users', auth.currentUser.uid, 'cameras'));
-        const lensesQuery = query(collection(db, 'users', auth.currentUser.uid, 'lenses'));
-        const tripodsQuery = query(collection(db, 'users', auth.currentUser.uid, 'tripods'));
-        const filtersQuery = query(collection(db, 'users', auth.currentUser.uid, 'filters'));
-
-        try {
-                    const querySnapshot = await getDocs(cameraQuery);
-                    const camerasArr = [];
-                    querySnapshot.forEach((doc) => {
-                        const data = doc.data();
-                        const brand = data.cameraBrand;
-                        const model = data.cameraModel;
-
-                        camerasArr.push({ id: doc.id, brand, model});
-                    });
-                    setCamerasData(camerasArr);
-                } catch (error) {
-                    console.error("Error fetching sessions:", error);
-                }
-
-        try {
-            const querySnapshot = await getDocs(lensesQuery);
-            const lensesArr = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const brand = data.lensBrand;
-                const model = data.lensModel;
-
-                lensesArr.push({ id: doc.id, brand, model});
-            });
-            setLensesData(lensesArr);
-        } catch (error) {
-            console.error("Error fetching sessions:", error);
-        }
-
-        try {
-            const querySnapshot = await getDocs(tripodsQuery);
-            const tripodsArr = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const brand = data.tripodBrand;
-                const model = data.tripodModel;
-
-                tripodsArr.push({ id: doc.id, brand, model});
-            });
-            setTripodsData(tripodsArr);
-        } catch (error) {
-            console.error("Error fetching sessions:", error);
-        }
-
-        try {
-            const querySnapshot = await getDocs(filtersQuery);
-            const filtersArr = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const brand = data.filterBrand;
-                const model = data.filterModel;
-
-                filtersArr.push({ id: doc.id, brand, model});
-            });
-            setFiltersData(filtersArr);
-        } catch (error) {
-            console.error("Error fetching sessions:", error);
-        }
-
-    }
+    // useEffect(() => {
+    //     const fetchGear = async () => {
+    //         try {
+    //             await getGear();
+    //         } catch (error) {
+    //             console.error("Error fetching gear:", error);
+    //         }
+    //     };
+    //     fetchGear();
+    // }, [cameraBrand, cameraModel, lensBrand, lensModel, tripodBrand, tripodModel, filterBrand, filterModel]);
+    //
+    //
+    // const toggleEventModal = () => {
+    //     setActionModal(!actionModal);
+    // }
+    //
+    // const toggleKitModal = () => {
+    //     setKitModal(!kitModal);
+    // }
+    //
+    //
+    // const handleCamera = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //     const camerasCollectionRef = collection(userDocRef, "cameras");
+    //     console.log(camerasCollectionRef);
+    //
+    //     const newCamera = {
+    //         cameraBrand: cameraBrand,
+    //         cameraModel: cameraModel
+    //     };
+    //
+    //     try {
+    //         await addDoc(camerasCollectionRef, newCamera)
+    //         setCameraBrand('');
+    //         setCameraModel('');
+    //         setActionModal(true)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    //
+    // }
+    //
+    // const handleLens = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //     const lensesCollectionRef = collection(userDocRef, "lenses");
+    //     console.log(lensesCollectionRef);
+    //
+    //     const newLens = {
+    //         lensBrand: lensBrand,
+    //         lensModel: lensModel
+    //     };
+    //
+    //     try {
+    //         await addDoc(lensesCollectionRef, newLens)
+    //         setLensBrand('');
+    //         setLensModel('');
+    //         setActionModal(true)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    //
+    // const handleTripod = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //     const tripodsCollectionRef = collection(userDocRef, "tripods");
+    //     console.log(tripodsCollectionRef);
+    //
+    //     const newTripod = {
+    //         tripodBrand: tripodBrand,
+    //         tripodModel: tripodModel
+    //     };
+    //
+    //     try {
+    //         await addDoc(tripodsCollectionRef, newTripod)
+    //         setTripodBrand('');
+    //         setTripodModel('');
+    //         setActionModal(true)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    //
+    // const handleFilter = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //     const filtersCollectionRef = collection(userDocRef, "filters");
+    //     console.log(filtersCollectionRef);
+    //
+    //     const newFilter = {
+    //         filterBrand: filterBrand,
+    //         filterModel: filterModel
+    //     };
+    //
+    //     try {
+    //         await addDoc(filtersCollectionRef, newFilter)
+    //         setFilterBrand('');
+    //         setFilterModel('');
+    //         setActionModal(true)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    //
+    // const handleKit = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //     const filtersCollectionRef = collection(userDocRef, "kits");
+    //     console.log(filtersCollectionRef);
+    //
+    //     const newKit = {
+    //         name: kitName,
+    //         cameras: kitCameras,
+    //         lenses: kitLenses,
+    //         tripods: kitTripods,
+    //         filters: kitFilters
+    //     };
+    //
+    //     try {
+    //         await addDoc(filtersCollectionRef, newKit)
+    //         setKitName('');
+    //         setKitCameras('');
+    //         setKitLenses('');
+    //         setKitTripods('');
+    //         setKitFilters('');
+    //         setKitModal(true)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    //
+    // const getGear = async () => {
+    //
+    //     if (!auth.currentUser) {
+    //                 return;
+    // }
+    //
+    //     const cameraQuery = query(collection(db, 'users', auth.currentUser.uid, 'cameras'));
+    //     const lensesQuery = query(collection(db, 'users', auth.currentUser.uid, 'lenses'));
+    //     const tripodsQuery = query(collection(db, 'users', auth.currentUser.uid, 'tripods'));
+    //     const filtersQuery = query(collection(db, 'users', auth.currentUser.uid, 'filters'));
+    //
+    //     try {
+    //                 const querySnapshot = await getDocs(cameraQuery);
+    //                 const camerasArr = [];
+    //                 querySnapshot.forEach((doc) => {
+    //                     const data = doc.data();
+    //                     const brand = data.cameraBrand;
+    //                     const model = data.cameraModel;
+    //
+    //                     camerasArr.push({ id: doc.id, brand, model});
+    //                 });
+    //                 setCamerasData(camerasArr);
+    //             } catch (error) {
+    //                 console.error("Error fetching sessions:", error);
+    //             }
+    //
+    //     try {
+    //         const querySnapshot = await getDocs(lensesQuery);
+    //         const lensesArr = [];
+    //         querySnapshot.forEach((doc) => {
+    //             const data = doc.data();
+    //             const brand = data.lensBrand;
+    //             const model = data.lensModel;
+    //
+    //             lensesArr.push({ id: doc.id, brand, model});
+    //         });
+    //         setLensesData(lensesArr);
+    //     } catch (error) {
+    //         console.error("Error fetching sessions:", error);
+    //     }
+    //
+    //     try {
+    //         const querySnapshot = await getDocs(tripodsQuery);
+    //         const tripodsArr = [];
+    //         querySnapshot.forEach((doc) => {
+    //             const data = doc.data();
+    //             const brand = data.tripodBrand;
+    //             const model = data.tripodModel;
+    //
+    //             tripodsArr.push({ id: doc.id, brand, model});
+    //         });
+    //         setTripodsData(tripodsArr);
+    //     } catch (error) {
+    //         console.error("Error fetching sessions:", error);
+    //     }
+    //
+    //     try {
+    //         const querySnapshot = await getDocs(filtersQuery);
+    //         const filtersArr = [];
+    //         querySnapshot.forEach((doc) => {
+    //             const data = doc.data();
+    //             const brand = data.filterBrand;
+    //             const model = data.filterModel;
+    //
+    //             filtersArr.push({ id: doc.id, brand, model});
+    //         });
+    //         setFiltersData(filtersArr);
+    //     } catch (error) {
+    //         console.error("Error fetching sessions:", error);
+    //     }
+    //
+    // }
 
 
 

@@ -6,6 +6,7 @@ import {ProtectedRoute} from "./Components/ProtectedRoute.jsx";
 import {Dashboard} from "./Components/Dashboard.jsx";
 import {AddGear} from "./Components/AddGear.jsx";
 import {AddEvent} from "./Components/AddEvent.jsx";
+import {GearCollection} from "./Components/GearCollection.jsx";
 
 export const App = () => {
     return (
@@ -33,7 +34,7 @@ export const App = () => {
                           path='/gear-collection'
                           element={
                               <ProtectedRoute>
-                                  <AddGear />
+                                  <GearCollection />
                               </ProtectedRoute>
                           }
                       />

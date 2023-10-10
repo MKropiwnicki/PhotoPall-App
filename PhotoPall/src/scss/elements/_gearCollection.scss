@@ -1,0 +1,108 @@
+@use '../settings/variables';
+@use '../settings/colors';
+
+.gearCollection-body-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+  .gearCollection-icon-container {
+    width: 10%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .collection-icon {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(250, 106, 20, 1) 0%, rgba(250, 106, 20, 0) 64%, rgba(250, 106, 20, 0) 100%);
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+
+      svg {
+        color: white;
+        font-size: 5rem;
+      }
+    }
+  }
+}
+
+.gearCollection-list-container {
+  width: 100%;
+  max-height: 80vh;
+  min-height: 80vh;
+  overflow: hidden;
+  margin: -1.5rem 1.5rem 3rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  align-self: center;
+  justify-self: center;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+
+
+  .collection-tile {
+    margin: 2rem;
+    width: auto;
+    height: 12rem;
+    background: rgba(2, 0, 43, 0.7);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+    transition: 0.2s ease-in-out;
+
+    .tile-content {
+      width: 10rem;
+      height: 100%;
+      padding: 1rem;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      svg {
+        font-size: 6rem;
+        margin-bottom: 2rem;
+
+      }
+
+      h2 {
+        font-size: 1rem;
+        font-family: variables.$Exo;
+        font-weight: 700;
+        text-align: center;
+      }
+    }
+
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 5px 5px 15px rgba(0,0,0, 1);
+    }
+  }
+
+  .delete-btn {
+    width: 3rem;
+    border: none;
+    background: red;
+
+    svg {
+      font-size: 2rem;
+      color: white;
+    }
+  }
+
+}
