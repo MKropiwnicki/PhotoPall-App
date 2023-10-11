@@ -142,71 +142,32 @@ export const AddEventBody = () => {
 
     }
 
-    // const getKits = async () => {
-    //
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const kitsQuery = query(collection(db, 'users', auth.currentUser.uid, 'kits'));
-    //
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(kitsQuery);
-    //         const kitsArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const name = data.name;
-    //
-    //             kitsArr.push({ id: doc.id, name});
-    //         });
-    //         setKitsData(kitsArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //
-    // }
+    const getKits = async () => {
 
-    // const handleInfo = async (e) => {
-    //     e.preventDefault();
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const q = query(collection(db, "users", auth.currentUser.uid, "sessions"));
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(q);
-    //         const events = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const location = data.coordinates;
-    //             const date = data.date.date;
-    //             const time = data.date.time;
-    //             const eventType = data.type;
-    //             const eventInfo = data.info;
-    //             events.push({ id: doc.id, type: eventType, location, date, time, info: eventInfo });
-    //         });
-    //         setEventData(events);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //     // const querySnapshot = await getDocs(q);
-    //     // querySnapshot.forEach((doc) => {
-    //     //     const data = doc.data();
-    //     //     const location = data.coordinates;
-    //     //     const date = data.date.date;
-    //     //     const time = data.date.time
-    //     //     const type = data.type
-    //     //     const info = data.info
-    //     //     console.log(doc.id, " => ", type, location, date, info, time);
-    //     //
-    //     // });
-    //
-    //
-    // }
+        if (!auth.currentUser) {
+            return;
+        }
+
+        const kitsQuery = query(collection(db, 'users', auth.currentUser.uid, 'kits'));
+
+
+        try {
+            const querySnapshot = await getDocs(kitsQuery);
+            const kitsArr = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const name = data.name;
+
+                kitsArr.push({ id: doc.id, name});
+            });
+            setKitsData(kitsArr);
+        } catch (error) {
+            console.error("Error fetching sessions:", error);
+        }
+
+
+    }
+
 
 
 
@@ -243,12 +204,12 @@ export const AddEventBody = () => {
                                         <label htmlFor="event-select">Choose an event type:</label>
                                         <select onChange={(e) => setType(e.target.value)} name="events" id="event-select">
                                             <option value="">Event type:</option>
-                                            <option value="wedding">Wedding</option>
-                                            <option value="model session">Model session</option>
-                                            <option value="wildlife">Wildlife</option>
-                                            <option value="landscape">Landscape</option>
-                                            <option value="astro">Astro</option>
-                                            <option value="product">Product</option>
+                                            <option value="Wedding">Wedding</option>
+                                            <option value="Model session">Model session</option>
+                                            <option value="Wildlife">Wildlife</option>
+                                            <option value="Landscape">Landscape</option>
+                                            <option value="Astro">Astro</option>
+                                            <option value="Product">Product</option>
                                         </select>
                                     </div>
                                     <div className='box select-box'>

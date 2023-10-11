@@ -69,6 +69,76 @@
       form {
         margin: 1rem 0 1rem 0;
         width: 100%;
+        height: 100%;
+
+        h2 {
+          font-family: variables.$Exo;
+          font-size: 1.5rem;
+          color: white;
+          margin-bottom: 2rem;
+          text-align: center;
+        }
+
+        .radio-container {
+          width: inherit;
+          height: inherit;
+
+          .radio-wrapper {
+            display: flex;
+
+            .left-top {
+              border-top: 1px solid rgba(255,255,255, 0.5);
+              border-left: 1px solid rgba(255,255,255, 0.5);
+              border-radius: 20px;
+            }
+
+            .bottom-right {
+              border-right: 1px solid rgba(255,255,255, 0.5);
+              border-bottom: 1px solid rgba(255,255,255, 0.5);
+              border-radius: 20px;
+            }
+
+            .radio-box {
+              width: 15rem;
+              height: 15rem;
+              padding: 0.5rem;
+              border-radius: 20px;
+              transition: 0.4s ease-in-out;
+
+              &:hover {
+                background: rgba(2, 0, 43, 0.7);
+              }
+
+              label {
+                display: flex;
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                h2 {
+                  color: white;
+                  font-size: 1rem;
+                  font-family: variables.$Exo;
+                  font-weight: 700;
+                  margin-top: 1rem;
+                }
+
+                svg {
+                  color: white;
+                  font-size: 5rem;
+                }
+                .radio {
+                  margin-top: 1rem;
+                  width: 1rem;
+                  height: 1rem;
+                }
+              }
+
+
+            }
+          }
+        }
         .box {
           display: flex;
           flex-direction: column;

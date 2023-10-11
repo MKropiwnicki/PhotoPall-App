@@ -4,13 +4,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {AnimatePresence, easeInOut, motion} from "framer-motion";
 import {auth, db} from "../firebase.js";
 import { doc, deleteDoc } from 'firebase/firestore';
-export const DeleteButton = ({itemID, visibility, toggleDeleteModal}) => {
+export const DeleteEventButton = ({itemID, visibility, toggleDeleteModal}) => {
 
     const handleDelete = async () => {
         try {
-            const docRef = doc(db, 'users', auth.currentUser.uid, 'gear', itemID);
+            const docRef = doc(db, 'users', auth.currentUser.uid, 'sessions', itemID);
             await deleteDoc(docRef);
-            console.log(`Gear: ${itemID} was deleted`);
+            console.log(`Session: ${itemID} was deleted`);
             visibility(true);
             toggleDeleteModal(true);
         } catch (error) {

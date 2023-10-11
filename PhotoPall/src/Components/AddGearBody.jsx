@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {auth, db} from "../firebase.js";
-import { collection, doc, getDocs, arrayUnion, addDoc, setDoc, query } from "firebase/firestore";
+import { collection, collectionGroup, doc, getDocs, addDoc, query } from "firebase/firestore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faCircleHalfStroke,
@@ -11,18 +11,15 @@ import {Button} from "./Button.jsx";
 import {ActionSavedModal} from "./ActionSavedModal.jsx";
 import {AnimatePresence, easeInOut, motion} from "framer-motion";
 import {KitSavedModal} from "./KitSavedModal.jsx";
+import {AddGear} from "./AddGear.jsx";
+import {AddGearButton} from "./AddGearButton.jsx";
 
 export const AddGearBody = () => {
 
 
-    const [cameraBrand, setCameraBrand] = useState('');
-    const [cameraModel, setCameraModel] = useState('');
-    const [lensBrand, setLensBrand] = useState('');
-    const [lensModel, setLensModel] = useState('');
-    const [tripodBrand, setTripodBrand] = useState('');
-    const [tripodModel, setTripodModel] = useState('');
-    const [filterBrand, setFilterBrand] = useState('');
-    const [filterModel, setFilterModel] = useState('');
+    const [gearBrand, setGearBrand] = useState('');
+    const [gearModel, setGearModel] = useState('');
+    const [gearType, setGearType] = useState('');
     const [kitName, setKitName] = useState('');
     const [kitCameras, setKitCameras] = useState('');
     const [kitLenses, setKitLenses] = useState('');
@@ -36,259 +33,118 @@ export const AddGearBody = () => {
     const [lensesData, setLensesData] = useState([]);
     const [tripodsData, setTripodsData] = useState([]);
     const [filtersData, setFiltersData] = useState([]);
+    const [newGearAdded, setNewGeaAdded] = useState(false)
 
-    // useEffect(() => {
-    //     const fetchGear = async () => {
-    //         try {
-    //             await getGear();
-    //         } catch (error) {
-    //             console.error("Error fetching gear:", error);
-    //         }
-    //     };
-    //     fetchGear();
-    // }, [cameraBrand, cameraModel, lensBrand, lensModel, tripodBrand, tripodModel, filterBrand, filterModel]);
-    //
-    //
-    // const toggleEventModal = () => {
-    //     setActionModal(!actionModal);
-    // }
-    //
-    // const toggleKitModal = () => {
-    //     setKitModal(!kitModal);
-    // }
-    //
-    //
-    // const handleCamera = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
-    //     const camerasCollectionRef = collection(userDocRef, "cameras");
-    //     console.log(camerasCollectionRef);
-    //
-    //     const newCamera = {
-    //         cameraBrand: cameraBrand,
-    //         cameraModel: cameraModel
-    //     };
-    //
-    //     try {
-    //         await addDoc(camerasCollectionRef, newCamera)
-    //         setCameraBrand('');
-    //         setCameraModel('');
-    //         setActionModal(true)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    //
-    // }
-    //
-    // const handleLens = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
-    //     const lensesCollectionRef = collection(userDocRef, "lenses");
-    //     console.log(lensesCollectionRef);
-    //
-    //     const newLens = {
-    //         lensBrand: lensBrand,
-    //         lensModel: lensModel
-    //     };
-    //
-    //     try {
-    //         await addDoc(lensesCollectionRef, newLens)
-    //         setLensBrand('');
-    //         setLensModel('');
-    //         setActionModal(true)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-    //
-    // const handleTripod = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
-    //     const tripodsCollectionRef = collection(userDocRef, "tripods");
-    //     console.log(tripodsCollectionRef);
-    //
-    //     const newTripod = {
-    //         tripodBrand: tripodBrand,
-    //         tripodModel: tripodModel
-    //     };
-    //
-    //     try {
-    //         await addDoc(tripodsCollectionRef, newTripod)
-    //         setTripodBrand('');
-    //         setTripodModel('');
-    //         setActionModal(true)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-    //
-    // const handleFilter = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
-    //     const filtersCollectionRef = collection(userDocRef, "filters");
-    //     console.log(filtersCollectionRef);
-    //
-    //     const newFilter = {
-    //         filterBrand: filterBrand,
-    //         filterModel: filterModel
-    //     };
-    //
-    //     try {
-    //         await addDoc(filtersCollectionRef, newFilter)
-    //         setFilterBrand('');
-    //         setFilterModel('');
-    //         setActionModal(true)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-    //
-    // const handleKit = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const userDocRef = doc(db, "users", auth.currentUser.uid);
-    //     const filtersCollectionRef = collection(userDocRef, "kits");
-    //     console.log(filtersCollectionRef);
-    //
-    //     const newKit = {
-    //         name: kitName,
-    //         cameras: kitCameras,
-    //         lenses: kitLenses,
-    //         tripods: kitTripods,
-    //         filters: kitFilters
-    //     };
-    //
-    //     try {
-    //         await addDoc(filtersCollectionRef, newKit)
-    //         setKitName('');
-    //         setKitCameras('');
-    //         setKitLenses('');
-    //         setKitTripods('');
-    //         setKitFilters('');
-    //         setKitModal(true)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-    //
-    // const getGear = async () => {
-    //
-    //     if (!auth.currentUser) {
-    //                 return;
-    // }
-    //
-    //     const cameraQuery = query(collection(db, 'users', auth.currentUser.uid, 'cameras'));
-    //     const lensesQuery = query(collection(db, 'users', auth.currentUser.uid, 'lenses'));
-    //     const tripodsQuery = query(collection(db, 'users', auth.currentUser.uid, 'tripods'));
-    //     const filtersQuery = query(collection(db, 'users', auth.currentUser.uid, 'filters'));
-    //
-    //     try {
-    //                 const querySnapshot = await getDocs(cameraQuery);
-    //                 const camerasArr = [];
-    //                 querySnapshot.forEach((doc) => {
-    //                     const data = doc.data();
-    //                     const brand = data.cameraBrand;
-    //                     const model = data.cameraModel;
-    //
-    //                     camerasArr.push({ id: doc.id, brand, model});
-    //                 });
-    //                 setCamerasData(camerasArr);
-    //             } catch (error) {
-    //                 console.error("Error fetching sessions:", error);
-    //             }
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(lensesQuery);
-    //         const lensesArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.lensBrand;
-    //             const model = data.lensModel;
-    //
-    //             lensesArr.push({ id: doc.id, brand, model});
-    //         });
-    //         setLensesData(lensesArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(tripodsQuery);
-    //         const tripodsArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.tripodBrand;
-    //             const model = data.tripodModel;
-    //
-    //             tripodsArr.push({ id: doc.id, brand, model});
-    //         });
-    //         setTripodsData(tripodsArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(filtersQuery);
-    //         const filtersArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.filterBrand;
-    //             const model = data.filterModel;
-    //
-    //             filtersArr.push({ id: doc.id, brand, model});
-    //         });
-    //         setFiltersData(filtersArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    // }
+    useEffect(() => {
+        const fetchGear = async () => {
+            try {
+                await getGear();
+            } catch (error) {
+                console.error("Error fetching gear:", error);
+            }
+        };
+        fetchGear();
+    }, [newGearAdded]);
 
 
+    const toggleEventModal = () => {
+        setActionModal(!actionModal);
+    }
 
-    // const handleInfo = async (e) => {
-    //     e.preventDefault();
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const q = query(collection(db, "users", auth.currentUser.uid, "sessions"));
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(q);
-    //         const events = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const location = data.coordinates;
-    //             const date = data.date.date;
-    //             const time = data.date.time;
-    //             const eventType = data.type;
-    //             const eventInfo = data.info;
-    //             events.push({ id: doc.id, type: eventType, location, date, time, info: eventInfo });
-    //         });
-    //         setEventData(events);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //     // const querySnapshot = await getDocs(q);
-    //     // querySnapshot.forEach((doc) => {
-    //     //     const data = doc.data();
-    //     //     const location = data.coordinates;
-    //     //     const date = data.date.date;
-    //     //     const time = data.date.time
-    //     //     const type = data.type
-    //     //     const info = data.info
-    //     //     console.log(doc.id, " => ", type, location, date, info, time);
-    //     //
-    //     // });
-    //
-    //
-    // }
+    const toggleKitModal = () => {
+        setKitModal(!kitModal);
+    }
+
+    const handleGear = async (e) => {
+        e.preventDefault();
+
+        const userDocRef = doc(db, "users", auth.currentUser.uid);
+            const gearCollectionRef = collection(userDocRef, "gear");
+            console.log(gearCollectionRef);
+
+            const newGear = {
+                type: gearType,
+                brand: gearBrand,
+                model: gearModel
+            };
+
+        try {
+                    await addDoc(gearCollectionRef, newGear)
+                    console.log(gearType)
+                    setGearType('')
+                    setGearBrand('');
+                    setGearModel('');
+                    setNewGeaAdded(!newGearAdded);
+                    setActionModal(true);
+                } catch (error) {
+                    console.log(error);
+                }
+    }
+
+
+    const handleKit = async (e) => {
+        e.preventDefault();
+
+        const userDocRef = doc(db, "users", auth.currentUser.uid);
+        const filtersCollectionRef = collection(userDocRef, "kits");
+        console.log(filtersCollectionRef);
+
+        const newKit = {
+            name: kitName,
+            cameras: kitCameras,
+            lenses: kitLenses,
+            tripods: kitTripods,
+            filters: kitFilters
+        };
+
+        try {
+            await addDoc(filtersCollectionRef, newKit)
+            setKitName('');
+            setKitCameras('');
+            setKitLenses('');
+            setKitTripods('');
+            setKitFilters('');
+            setKitModal(true)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getGear = async () => {
+
+        if (!auth.currentUser) {
+                    return;
+    }
+
+        const gearCollectionQuery = query(collection(db, 'users', auth.currentUser.uid, 'gear'));
+
+
+        try {
+                    const querySnapshot = await getDocs(gearCollectionQuery);
+                    const gearArr = [];
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const type = data.type;
+                        const brand = data.brand;
+                        const model = data.model;
+                        console.log(type);
+                        gearArr.push({ id: doc.id, type, brand, model});
+                    });
+                    const camerasArr = gearArr.filter((gear) => gear.type === 'camera')
+                    const lensesArr = gearArr.filter((gear) => gear.type === 'lens')
+                    const tripodsArr = gearArr.filter((gear) => gear.type === 'tripod')
+                    const filtersArr = gearArr.filter((gear) => gear.type === 'filter')
+                    setCamerasData(camerasArr);
+                    setLensesData(lensesArr);
+                    setTripodsData(tripodsArr);
+                    setFiltersData(filtersArr);
+                    console.log(gearArr);
+                } catch (error) {
+                    console.error("Error fetching sessions:", error);
+                }
+
+    }
+
 
 
 
@@ -318,90 +174,71 @@ export const AddGearBody = () => {
                     <div className='wrapper'>
                         <div className='gear-wrapper'>
                             <div className='gear-form-box'>
-                                <form>
-                                    <div className='box'>
-                                        <div className='icon-box'>
-                                            <FontAwesomeIcon icon={faCamera}/>
-                                            <h2>Camera body</h2>
+                                <form onSubmit={handleGear}>
+                                    <h2>Choose gear type:</h2>
+                                    <div className='radio-container'>
+                                        <div className='radio-wrapper'>
+                                            <div className='radio-box bottom-right'>
+                                                <label>
+                                                    <FontAwesomeIcon icon={faCamera}/>
+                                                    <h2>Camera</h2>
+                                                    <input className='radio' type="radio" name="gear-type" value="camera" onChange={(e) => setGearType(e.target.value)}/>
+                                                </label>
+                                            </div>
+                                            <div className='radio-box'>
+                                                <label>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="80"
+                                                        height="80"
+                                                        viewBox="0 0 123.45 123.45"
+                                                        fill='white'
+                                                    >
+                                                        <path
+                                                            d="M61.72,0.28c14.77,0,28.33,5.22,38.93,13.9L46.86,45.24V2.1C51.62,0.91,56.6,0.28,61.72,0.28L61.72,0.28z M105.99,19.12c10.63,11.05,17.17,26.06,17.17,42.6c0,3.02-0.22,5.98-0.64,8.89L69.66,40.09L105.99,19.12L105.99,19.12z M121.05,77.76c-4.9,18.16-17.91,32.99-34.91,40.36l0-60.51L121.05,77.76L121.05,77.76z M79.21,120.64 c-5.54,1.64-11.41,2.53-17.48,2.53c-13.75,0-26.44-4.52-36.67-12.14l54.16-31.27L79.21,120.64L79.21,120.64z M19.41,106.27 C7.63,95.07,0.28,79.26,0.28,61.72c0-3.03,0.22-6,0.65-8.92l54.51,32.65L19.41,106.27L19.41,106.27z M2.42,45.62 C7.58,26.57,21.67,11.21,39.91,4.27l-0.44,63.54L2.42,45.62L2.42,45.62z"
+                                                        />
+                                                    </svg>
+                                                    <h2>Lens</h2>
+                                                    <input className='radio' type="radio" name="gear-type" value="lens" onChange={(e) => setGearType(e.target.value)}/>
+                                                </label>
+                                            </div>
                                         </div>
-                                        <label htmlFor='camera-brand'>Brand:</label>
-                                        <input value={cameraBrand} onChange={(e) => setCameraBrand(e.target.value)} type='text' id='camera-brand' placeholder='Brand'/>
-                                        <label htmlFor='camera-model'>Model:</label>
-                                        <input value={cameraModel} onChange={(e) => setCameraModel(e.target.value)} type='text' id='camera-model' placeholder='Model'/>
+                                        <div className='radio-wrapper'>
+                                            <div className='radio-box'>
+                                                <label>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="80"
+                                                        height="80"
+                                                        viewBox="0 0 96.5 122.88"
+                                                        fill='white'
+                                                    >
+                                                        <path
+                                                            d="M22,6.07V7.45H36.13V3.78A3.79,3.79,0,0,1,39.91,0H72.15a3.79,3.79,0,0,1,3.77,3.78V16a3.79,3.79,0,0,1-3.77,3.78H60.48v5.34h6.67a2.61,2.61,0,0,1,2.6,2.6v1h2.4a3.79,3.79,0,0,1,3.77,3.78v3.9a3.79,3.79,0,0,1-3.77,3.78H59.87a3.4,3.4,0,0,1,1.06,1.22L83.6,84.89l.52-.27a1.9,1.9,0,0,1,2.56.8l9.6,18.43a1.9,1.9,0,0,1-.8,2.56l-.52.27,1,2a3.5,3.5,0,0,1-6.22,3.23l-1-2-.31.16a1.91,1.91,0,0,1-2.56-.8l-9.6-18.43a1.91,1.91,0,0,1,.8-2.56l.31-.16L59.54,53.89V92.54h.34a1.9,1.9,0,0,1,1.9,1.9v20.78a1.9,1.9,0,0,1-1.9,1.89h-.34v2.26a3.51,3.51,0,0,1-7,0v-2.26h-.58a1.9,1.9,0,0,1-1.9-1.89V94.44a1.9,1.9,0,0,1,1.9-1.9h.58V52.07L33.73,88.13l.31.16a1.91,1.91,0,0,1,.8,2.56l-9.6,18.43a1.91,1.91,0,0,1-2.56.8l-.31-.16-1,2a3.5,3.5,0,0,1-6.22-3.23l1-2-.52-.27a1.9,1.9,0,0,1-.8-2.56l9.6-18.43a1.9,1.9,0,0,1,2.56-.8l.52.27L50.18,41.38a3.4,3.4,0,0,1,1.06-1.22H39.91a3.79,3.79,0,0,1-3.78-3.78v-3.9a3.79,3.79,0,0,1,3.78-3.78H42.3v-1a2.61,2.61,0,0,1,2.61-2.6h6.67V19.79H39.91A3.79,3.79,0,0,1,36.13,16V12H22v1.14a1.7,1.7,0,0,1-1.7,1.7H1.69A1.7,1.7,0,0,1,0,13.16V6.07a1.7,1.7,0,0,1,1.69-1.7H20.25A1.7,1.7,0,0,1,22,6.07ZM65.78,4.63a5,5,0,1,1-5,5,5,5,0,0,1,5-5Z"
+                                                        />
+                                                    </svg>
+                                                    <h2>Tripod</h2>
+                                                    <input className='radio' type="radio" name="gear-type" value="tripod" onChange={(e) => setGearType(e.target.value)}/>
+                                                </label>
+                                            </div>
+                                            <div className='radio-box left-top'>
+                                                <label>
+                                                    <FontAwesomeIcon icon={faCircleHalfStroke}/>
+                                                    <h2>Filter</h2>
+                                                    <input className='radio' type="radio" name="gear-type" value="filter" onChange={(e) => setGearType(e.target.value)}/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className='box'>
+                                        <label htmlFor='gear-brand'>Brand:</label>
+                                        <input value={gearBrand} onChange={(e) => setGearBrand(e.target.value)} type='text' id='gear-brand' placeholder='Brand'/>
+                                        <label htmlFor='gear-model'>Model:</label>
+                                        <input value={gearModel} onChange={(e) => setGearModel(e.target.value)} type='text' id='gear-model' placeholder='Model'/>
                                     </div>
                                     <div className='add-btn-box'>
-                                        <Button onClick={handleCamera} title='Add' classMod='add-btn' />
-                                    </div>
-                                </form>
-
-                                <form>
-                                    <div className='box'>
-                                        <div className='icon-box'>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="48"
-                                                height="48"
-                                                viewBox="0 0 123.45 123.45"
-                                                fill='white'
-                                            >
-                                                <path
-                                                    d="M61.72,0.28c14.77,0,28.33,5.22,38.93,13.9L46.86,45.24V2.1C51.62,0.91,56.6,0.28,61.72,0.28L61.72,0.28z M105.99,19.12c10.63,11.05,17.17,26.06,17.17,42.6c0,3.02-0.22,5.98-0.64,8.89L69.66,40.09L105.99,19.12L105.99,19.12z M121.05,77.76c-4.9,18.16-17.91,32.99-34.91,40.36l0-60.51L121.05,77.76L121.05,77.76z M79.21,120.64 c-5.54,1.64-11.41,2.53-17.48,2.53c-13.75,0-26.44-4.52-36.67-12.14l54.16-31.27L79.21,120.64L79.21,120.64z M19.41,106.27 C7.63,95.07,0.28,79.26,0.28,61.72c0-3.03,0.22-6,0.65-8.92l54.51,32.65L19.41,106.27L19.41,106.27z M2.42,45.62 C7.58,26.57,21.67,11.21,39.91,4.27l-0.44,63.54L2.42,45.62L2.42,45.62z"
-                                                />
-                                            </svg>
-                                            <h2>Lens</h2>
-                                        </div>
-                                        <label htmlFor='lens-brand'>Brand:</label>
-                                        <input value={lensBrand} onChange={(e) => setLensBrand(e.target.value)} type='text' id='lens-brand' placeholder='Brand'/>
-                                        <label htmlFor='lens-model'>Model:</label>
-                                        <input value={lensModel} onChange={(e) => setLensModel(e.target.value)} type='text' id='lens-model' placeholder='Model'/>
-                                    </div>
-                                    <div className='add-btn-box'>
-                                        <Button onClick={handleLens} title='Add' classMod='add-btn' />
-                                    </div>
-                                </form>
-
-                            </div>
-
-                            <div className='gear-form-box'>
-                                <form>
-                                    <div className='box'>
-                                        <div className='icon-box'>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="48"
-                                                height="48"
-                                                viewBox="0 0 96.5 122.88"
-                                                fill='white'
-                                            >
-                                                <path
-                                                    d="M22,6.07V7.45H36.13V3.78A3.79,3.79,0,0,1,39.91,0H72.15a3.79,3.79,0,0,1,3.77,3.78V16a3.79,3.79,0,0,1-3.77,3.78H60.48v5.34h6.67a2.61,2.61,0,0,1,2.6,2.6v1h2.4a3.79,3.79,0,0,1,3.77,3.78v3.9a3.79,3.79,0,0,1-3.77,3.78H59.87a3.4,3.4,0,0,1,1.06,1.22L83.6,84.89l.52-.27a1.9,1.9,0,0,1,2.56.8l9.6,18.43a1.9,1.9,0,0,1-.8,2.56l-.52.27,1,2a3.5,3.5,0,0,1-6.22,3.23l-1-2-.31.16a1.91,1.91,0,0,1-2.56-.8l-9.6-18.43a1.91,1.91,0,0,1,.8-2.56l.31-.16L59.54,53.89V92.54h.34a1.9,1.9,0,0,1,1.9,1.9v20.78a1.9,1.9,0,0,1-1.9,1.89h-.34v2.26a3.51,3.51,0,0,1-7,0v-2.26h-.58a1.9,1.9,0,0,1-1.9-1.89V94.44a1.9,1.9,0,0,1,1.9-1.9h.58V52.07L33.73,88.13l.31.16a1.91,1.91,0,0,1,.8,2.56l-9.6,18.43a1.91,1.91,0,0,1-2.56.8l-.31-.16-1,2a3.5,3.5,0,0,1-6.22-3.23l1-2-.52-.27a1.9,1.9,0,0,1-.8-2.56l9.6-18.43a1.9,1.9,0,0,1,2.56-.8l.52.27L50.18,41.38a3.4,3.4,0,0,1,1.06-1.22H39.91a3.79,3.79,0,0,1-3.78-3.78v-3.9a3.79,3.79,0,0,1,3.78-3.78H42.3v-1a2.61,2.61,0,0,1,2.61-2.6h6.67V19.79H39.91A3.79,3.79,0,0,1,36.13,16V12H22v1.14a1.7,1.7,0,0,1-1.7,1.7H1.69A1.7,1.7,0,0,1,0,13.16V6.07a1.7,1.7,0,0,1,1.69-1.7H20.25A1.7,1.7,0,0,1,22,6.07ZM65.78,4.63a5,5,0,1,1-5,5,5,5,0,0,1,5-5Z"
-                                                />
-                                            </svg>
-                                            <h2>Tripod</h2>
-                                        </div>
-                                        <label htmlFor='tripod-brand'>Brand:</label>
-                                        <input value={tripodBrand} onChange={(e) => setTripodBrand(e.target.value)} type='text' id='tripod-brand' placeholder='Brand'/>
-                                        <label htmlFor='tripod-model'>Model:</label>
-                                        <input value={tripodModel} onChange={(e) => setTripodModel(e.target.value)} type='text' id='tripod-model' placeholder='Model'/>
-                                    </div>
-                                    <div className='add-btn-box'>
-                                        <Button onClick={handleTripod} title='Add' classMod='add-btn' />
-                                    </div>
-                                </form>
-
-                                <form>
-                                    <div className='box'>
-                                        <div className='icon-box'>
-                                            <FontAwesomeIcon icon={faCircleHalfStroke}/>
-                                            <h2>Filter</h2>
-                                        </div>
-                                        <label htmlFor='filter-brand'>Brand:</label>
-                                        <input value={filterBrand} onChange={(e) => setFilterBrand(e.target.value)} type='text' id='filter-brand' placeholder='Brand'/>
-                                        <label htmlFor='filter-model'>Model:</label>
-                                        <input value={filterModel} onChange={(e) => setFilterModel(e.target.value)} type='text' id='filter-model' placeholder='Model'/>
-                                    </div>
-                                    <div className='add-btn-box'>
-                                        <Button onClick={handleFilter} title='Add' classMod='add-btn' />
+                                        <AddGearButton title='Add' classMod='add-btn' />
                                     </div>
                                 </form>
 
@@ -486,24 +323,6 @@ export const AddGearBody = () => {
                                 </div>
                             </form>
                         </div>
-
-
-
-
-
-                            {/*<button onClick={handleInfo}>get info</button>*/}
-
-                            {/*{eventData.map((event) => (*/}
-                            {/*    <div key={event.id}>*/}
-                            {/*        <p>event.id</p>*/}
-                            {/*        <p>Type: {event.type}</p>*/}
-                            {/*        <p>Location: {event.location}</p>*/}
-                            {/*        <p>Date: {event.date}</p>*/}
-                            {/*        <p>Time: {event.time}</p>*/}
-                            {/*        <p>Info: {event.info}</p>*/}
-                            {/*    </div>*/}
-                            {/*))}*/}
-
                     </div>
                 </motion.div>
             </div>

@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {auth, db} from "../firebase.js";
-import { collection, doc, getDocs, arrayUnion, addDoc, setDoc, query } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-     faRectangleList, faCamera
+    faRectangleList, faCamera, faCircleHalfStroke
 } from "@fortawesome/free-solid-svg-icons";
-import {Button} from "./Button.jsx";
-import {ActionSavedModal} from "./ActionSavedModal.jsx";
 import {AnimatePresence, easeInOut, motion} from "framer-motion";
 import {DeleteButton} from "./DeleteButton.jsx";
+import {DeleteModal} from "./DeleteModal.jsx";
 
 export const GearCollectionBody = () => {
 
@@ -18,153 +17,71 @@ export const GearCollectionBody = () => {
     const [triCollData, setTriCollData] = useState([]);
     const [filCollData, setFilCollData] = useState([]);
     const [btnVis, setBtnVis] = useState(false);
-    const [tileVis, setTileVis] = useState(true);
+    const [refresh, setRefresh] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
 
 
-    // useEffect(() => {
-    //     const fetchGear = async () => {
-    //         try {
-    //             await camerasCollection();
-    //             await lensesCollection();
-    //             await tripodsCollection();
-    //             await filtersCollection();
-    //         } catch (error) {
-    //             console.error("Error fetching gear:", error);
-    //         }
-    //     };
-    //     fetchGear();
-    // }, []);
-
-
+    useEffect(() => {
+        const fetchGear = async () => {
+            try {
+                await gearCollection()
+            } catch (error) {
+                console.error("Error fetching gear:", error);
+            }
+        };
+        fetchGear();
+    }, [refresh]);
 
 
     const toggleDeleteBtn = (index) => {
         setBtnVis(index);
     }
 
-    // const toggleEventModal = () => {
-    //     setActionModal(!actionModal);
-    // }
+    const toggleDeleteModal = () => {
+        setDeleteModal(!deleteModal);
+    }
 
 
 
 
-    // const camerasCollection = async () => {
-    //
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const camerasCollectionQuery = query(collection(db, 'users', auth.currentUser.uid, 'cameras'));
-    //
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(camerasCollectionQuery);
-    //         const camCollArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.cameraBrand;
-    //             const model = data.cameraModel;
-    //
-    //             camCollArr.push({ id: doc.id, model: model, brand: brand});
-    //         });
-    //         setCamCollData(camCollArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //
-    // }
-    //
-    // const lensesCollection = async () => {
-    //
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const lensesCollectionQuery = query(collection(db, 'users', auth.currentUser.uid, 'lenses'));
-    //
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(lensesCollectionQuery);
-    //         const lensCollArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.lensBrand;
-    //             const model = data.lensModel;
-    //
-    //             lensCollArr.push({ id: doc.id, model: model, brand: brand});
-    //         });
-    //         setLensCollData(lensCollArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //
-    // }
-    //
-    // const tripodsCollection = async () => {
-    //
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const tripodsCollectionQuery = query(collection(db, 'users', auth.currentUser.uid, 'tripods'));
-    //
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(tripodsCollectionQuery);
-    //         const triCollArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.tripodBrand;
-    //             const model = data.tripodModel;
-    //
-    //             triCollArr.push({ id: doc.id, model: model, brand: brand});
-    //         });
-    //         setTriCollData(triCollArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //
-    // }
-    //
-    // const filtersCollection = async () => {
-    //
-    //     if (!auth.currentUser) {
-    //         return;
-    //     }
-    //
-    //     const filtersCollectionQuery = query(collection(db, 'users', auth.currentUser.uid, 'filters'));
-    //
-    //
-    //     try {
-    //         const querySnapshot = await getDocs(filtersCollectionQuery);
-    //         const filCollArr = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const data = doc.data();
-    //             const brand = data.filterBrand;
-    //             const model = data.filterModel;
-    //
-    //             filCollArr.push({ id: doc.id, model: model, brand: brand});
-    //         });
-    //         setFilCollData(filCollArr);
-    //     } catch (error) {
-    //         console.error("Error fetching sessions:", error);
-    //     }
-    //
-    //
-    // }
+    const gearCollection = async () => {
+
+        if (!auth.currentUser) {
+            return;
+        }
+
+        const gearCollectionQuery = query(collection(db, 'users', auth.currentUser.uid, 'gear'));
 
 
+        try {
+            const querySnapshot = await getDocs(gearCollectionQuery);
+            const gearArr = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const type = data.type;
+                const brand = data.brand;
+                const model = data.model;
+                console.log(type);
+                gearArr.push({ id: doc.id, type, brand, model});
+            });
+            const camerasArr = gearArr.filter((gear) => gear.type === 'camera')
+            const lensesArr = gearArr.filter((gear) => gear.type === 'lens')
+            const tripodsArr = gearArr.filter((gear) => gear.type === 'tripod')
+            const filtersArr = gearArr.filter((gear) => gear.type === 'filter')
+            setCamCollData(camerasArr);
+            setLensCollData(lensesArr);
+            setTriCollData(tripodsArr);
+            setFilCollData(filtersArr);
+        } catch (error) {
+            console.error("Error fetching sessions:", error);
+        }
 
-
+    }
 
 
     return (
         <AnimatePresence>
-            <div className='gearCollection-body-container'>
+            <motion.div className='gearCollection-body-container'>
                 <div className='gearCollection-icon-container'>
                     <div className='collection-icon'>
                         <FontAwesomeIcon icon={faRectangleList}/>
@@ -177,29 +94,34 @@ export const GearCollectionBody = () => {
                             animate={{opacity: 1, scale: 1, transition: {type: "spring", stiffness: 100}}}
                             exit={{opacity: 0, scale: 0}}
                             transition={{duration: 0.2, ease: easeInOut}}>
-                    {camCollData.map((camData, index) => (
-                        <motion.div key={camData.id} className='collection-tile'
-                             onMouseEnter={() => toggleDeleteBtn(index)}
-                             onMouseLeave={() => toggleDeleteBtn(null)} >
-                            <motion.div layout='position' className='tile-content'>
+
+                    {deleteModal && (
+                        <DeleteModal toggleDeleteModal={toggleDeleteModal} content='Gear removed from collection.' title='Close'/>
+                    )}
+
+                    {camCollData.map((camData) => (
+                        <motion.div layout transition={{ duration: 0.3 }} key={camData.id} className='collection-tile'
+                                    onMouseEnter={() => toggleDeleteBtn(camData.id)}
+                                    onMouseLeave={() => toggleDeleteBtn(null)}>
+                            <motion.div className='tile-content'>
                                 <FontAwesomeIcon icon={faCamera}/>
                                 <h2>{camData.brand} {camData.model}</h2>
                             </motion.div>
-                            {btnVis === index && (
-                                <DeleteButton />
+                            {btnVis === camData.id && (
+                                <DeleteButton toggleDeleteModal={setDeleteModal} itemID={camData.id} visibility={setRefresh} />
                             )}
                         </motion.div>
                     ))}
 
-                    {lensCollData.map((lensData, index) => (
-                        <motion.div transition={{ layout: {duration: 1, ease: easeInOut, type: "spring"}}} Layout key={lensData.id} className='collection-tile'
-                                    onMouseEnter={() => toggleDeleteBtn(index)}
+                    {lensCollData.map((lensData) => (
+                        <motion.div layout transition={{ duration: 0.3 }} key={lensData.id} className='collection-tile'
+                                    onMouseEnter={() => toggleDeleteBtn(lensData.id)}
                                     onMouseLeave={() => toggleDeleteBtn(null)} >
                             <motion.div className='tile-content'>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="48"
-                                    height="48"
+                                    width="80"
+                                    height="80"
                                     viewBox="0 0 123.45 123.45"
                                     fill='white'
                                 >
@@ -209,13 +131,51 @@ export const GearCollectionBody = () => {
                                 </svg>
                                 <h2>{lensData.brand} {lensData.model}</h2>
                             </motion.div>
-                            {btnVis === index && (
-                                <DeleteButton />
+                            {btnVis === lensData.id && (
+                                <DeleteButton toggleDeleteModal={setDeleteModal}  itemID={lensData.id} visibility={setRefresh} />
+                            )}
+                        </motion.div>
+                    ))}
+
+                    {triCollData.map((triData) => (
+                        <motion.div layout transition={{ duration: 0.3 }} key={triData.id} className='collection-tile'
+                                    onMouseEnter={() => toggleDeleteBtn(triData.id)}
+                                    onMouseLeave={() => toggleDeleteBtn(null)} >
+                            <motion.div className='tile-content'>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="80"
+                                    height="80"
+                                    viewBox="0 0 96.5 122.88"
+                                    fill='white'
+                                >
+                                    <path
+                                        d="M22,6.07V7.45H36.13V3.78A3.79,3.79,0,0,1,39.91,0H72.15a3.79,3.79,0,0,1,3.77,3.78V16a3.79,3.79,0,0,1-3.77,3.78H60.48v5.34h6.67a2.61,2.61,0,0,1,2.6,2.6v1h2.4a3.79,3.79,0,0,1,3.77,3.78v3.9a3.79,3.79,0,0,1-3.77,3.78H59.87a3.4,3.4,0,0,1,1.06,1.22L83.6,84.89l.52-.27a1.9,1.9,0,0,1,2.56.8l9.6,18.43a1.9,1.9,0,0,1-.8,2.56l-.52.27,1,2a3.5,3.5,0,0,1-6.22,3.23l-1-2-.31.16a1.91,1.91,0,0,1-2.56-.8l-9.6-18.43a1.91,1.91,0,0,1,.8-2.56l.31-.16L59.54,53.89V92.54h.34a1.9,1.9,0,0,1,1.9,1.9v20.78a1.9,1.9,0,0,1-1.9,1.89h-.34v2.26a3.51,3.51,0,0,1-7,0v-2.26h-.58a1.9,1.9,0,0,1-1.9-1.89V94.44a1.9,1.9,0,0,1,1.9-1.9h.58V52.07L33.73,88.13l.31.16a1.91,1.91,0,0,1,.8,2.56l-9.6,18.43a1.91,1.91,0,0,1-2.56.8l-.31-.16-1,2a3.5,3.5,0,0,1-6.22-3.23l1-2-.52-.27a1.9,1.9,0,0,1-.8-2.56l9.6-18.43a1.9,1.9,0,0,1,2.56-.8l.52.27L50.18,41.38a3.4,3.4,0,0,1,1.06-1.22H39.91a3.79,3.79,0,0,1-3.78-3.78v-3.9a3.79,3.79,0,0,1,3.78-3.78H42.3v-1a2.61,2.61,0,0,1,2.61-2.6h6.67V19.79H39.91A3.79,3.79,0,0,1,36.13,16V12H22v1.14a1.7,1.7,0,0,1-1.7,1.7H1.69A1.7,1.7,0,0,1,0,13.16V6.07a1.7,1.7,0,0,1,1.69-1.7H20.25A1.7,1.7,0,0,1,22,6.07ZM65.78,4.63a5,5,0,1,1-5,5,5,5,0,0,1,5-5Z"
+                                    />
+                                </svg>
+                                <h2>{triData.brand} {triData.model}</h2>
+                            </motion.div>
+                            {btnVis === triData.id && (
+                                <DeleteButton toggleDeleteModal={setDeleteModal} itemID={triData.id} visibility={setRefresh} />
+                            )}
+                        </motion.div>
+                    ))}
+
+                    {filCollData.map((filData) => (
+                        <motion.div layout transition={{ duration: 0.3 }} key={filData.id} className='collection-tile'
+                                    onMouseEnter={() => toggleDeleteBtn(filData.id)}
+                                    onMouseLeave={() => toggleDeleteBtn(null)} >
+                            <motion.div className='tile-content'>
+                                <FontAwesomeIcon icon={faCircleHalfStroke}/>
+                                <h2>{filData.brand} {filData.model}</h2>
+                            </motion.div>
+                            {btnVis === filData.id && (
+                                <DeleteButton toggleDeleteModal={setDeleteModal} itemID={filData.id} visibility={setRefresh} />
                             )}
                         </motion.div>
                     ))}
                 </motion.div>
-            </div>
+            </motion.div>
         </AnimatePresence>
     );
 };
