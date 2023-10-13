@@ -7,7 +7,6 @@ import {AppHeader} from "./AppHeader.jsx";
 import {AddEventBody} from "./AddEventBody.jsx";
 
 export const AddEvent = () => {
-    const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
 

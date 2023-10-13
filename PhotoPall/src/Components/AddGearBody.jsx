@@ -11,7 +11,6 @@ import {Button} from "./Button.jsx";
 import {ActionSavedModal} from "./ActionSavedModal.jsx";
 import {AnimatePresence, easeInOut, motion} from "framer-motion";
 import {KitSavedModal} from "./KitSavedModal.jsx";
-import {AddGear} from "./AddGear.jsx";
 import {AddGearButton} from "./AddGearButton.jsx";
 
 export const AddGearBody = () => {

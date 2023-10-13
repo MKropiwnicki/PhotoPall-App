@@ -30,7 +30,6 @@ export const AppBody = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Combine the queries for events and gear here
                 await getEvents();
                 await getGearNumbers();
             } catch (error) {
@@ -52,7 +51,30 @@ export const AppBody = () => {
             };
             getData();
         }
-    }, [eventData]);
+
+        if (eventData.length > 0) {
+            const firstEvent = eventData[0];
+            showEvent(
+                firstEvent.date,
+                firstEvent.time,
+                firstEvent.info,
+                firstEvent.city,
+                firstEvent.country,
+                firstEvent.houseNumber,
+                firstEvent.postalCode,
+                firstEvent.street,
+                firstEvent.poi,
+                firstEvent.modelName,
+                firstEvent.modelSurname,
+                firstEvent.modelPhone,
+                firstEvent.modelEmail,
+                firstEvent.type
+            );
+            console.log(firstEvent.type)
+        }
+
+
+    }, []);
 
 
     const getEvents = async () => {
@@ -129,28 +151,7 @@ export const AppBody = () => {
 
 
 
-     useEffect(() => {
-        if (eventData.length > 0) {
-            const firstEvent = eventData[0];
-            showEvent(
-                firstEvent.date,
-                firstEvent.time,
-                firstEvent.info,
-                firstEvent.city,
-                firstEvent.country,
-                firstEvent.houseNumber,
-                firstEvent.postalCode,
-                firstEvent.street,
-                firstEvent.poi,
-                firstEvent.modelName,
-                firstEvent.modelSurname,
-                firstEvent.modelPhone,
-                firstEvent.modelEmail,
-                firstEvent.type
-            );
-            console.log(firstEvent.type)
-        }
-    }, [eventData]);
+
 
     const showEvent = ( date,
                         time,
