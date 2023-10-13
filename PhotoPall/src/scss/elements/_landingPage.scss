@@ -524,6 +524,16 @@ body::-webkit-scrollbar {
     }
   }
 }
+.link {
+
+  color: white;
+  font-size: 1rem;
+  font-family: variables.$Exo;
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
 
 
 

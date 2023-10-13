@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {auth, db} from "../firebase.js";
-import { collection, collectionGroup, doc, getDocs, addDoc, query } from "firebase/firestore";
+import { collection, doc, getDocs, addDoc, query } from "firebase/firestore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faCircleHalfStroke,

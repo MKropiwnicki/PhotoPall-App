@@ -51,72 +51,74 @@ export const AddEventBody = () => {
         setActionModal(!actionModal);
     }
 
-
     const handleEvent = async (e) => {
         e.preventDefault();
 
         const address = `${street}+${houseNum}+${postalCode}+${city}+${country}+${poi}`;
-        const geoCodeURL = `https://geocode.maps.co/search?q=${address}`
-
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const photoSessionsCollectionRef = collection(userDocRef, "sessions");
-        console.log(photoSessionsCollectionRef);
-
-        const getCoordinates = async () => {
-            try {
-                const response = await fetch(geoCodeURL);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-
-                if (data.length === 0 || data[0].lon === undefined || data[0].lat === undefined) {
-                    console.log('Incorrect data or coordinates dont exist');
-                    return ['0', '0'];
-                } else {
-                    const coordinates = [data[0].lat, data[0].lon];
-                    console.log(coordinates);
-                    return coordinates;
-                }
-            } catch (error) {
-                console.error('Data fetch error:', error);
-                return ['0', '0'];
-            }
-        }
-
-        const coordinates = await getCoordinates();
-
-        const newEvent = {
-            coordinates: coordinates,
-            date: {
-                date: date,
-                time: time
-            },
-            info: info,
-            kit: kit,
-            location: {
-                city: city,
-                country: country,
-                houseNumber: houseNum,
-                poi: poi,
-                postalCode: postalCode,
-                street: street
-            },
-            model: {
-                email: email,
-                name: name,
-                phone: phone,
-                surname: surname
-            },
-            type: type,
-            isActive: status
-        };
+        const geoCodeURL = `https://geocode.maps.co/search?q=${address}`;
 
         try {
-            await addDoc(photoSessionsCollectionRef, newEvent)
+            const coordinates = await getCoordinates(geoCodeURL);
+            const newEvent = {
+                coordinates: coordinates,
+                date: {
+                    date: date,
+                    time: time,
+                },
+                info: info,
+                kit: kit,
+                location: {
+                    city: city,
+                    country: country,
+                    houseNumber: houseNum,
+                    poi: poi,
+                    postalCode: postalCode,
+                    street: street,
+                },
+                model: {
+                    email: email,
+                    name: name,
+                    phone: phone,
+                    surname: surname,
+                },
+                type: type,
+                isActive: status,
+            };
+            await createNewEvent(newEvent);
 
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const getCoordinates = async (geoCodeURL) => {
+                try {
+                    const response = await fetch(geoCodeURL);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.length === 0 || data[0].lon === undefined || data[0].lat === undefined) {
+                        console.log('Incorrect data or coordinates dont exist');
+                        return ['0', '0'];
+                    } else {
+                        const coordinates = {lon: data[0].lon, lat: data[0].lat};
+                        console.log(coordinates);
+                        return coordinates;
+                    }
+                } catch (error) {
+                    console.error('Data fetch error:', error);
+                    return ['0', '0'];
+                }
+            }
+
+    const createNewEvent = async (newEvent) => {
+        try {
+            const userDocRef = doc(db, "users", auth.currentUser.uid);
+            const photoSessionsCollectionRef = collection(userDocRef, "sessions");
+            await addDoc(photoSessionsCollectionRef, newEvent);
             setStatus(true);
             setType('');
             setKit('');
@@ -133,14 +135,176 @@ export const AddEventBody = () => {
             setPhone('');
             setEmail('');
             setInfo('');
-            setActionModal(true)
+            setActionModal(true);
         } catch (error) {
-            console.log(error)
+            console.error(error);
         }
+    };
 
 
+    // const handleEvent = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const address = `${street}+${houseNum}+${postalCode}+${city}+${country}+${poi}`;
+    //     const geoCodeURL = `https://geocode.maps.co/search?q=${address}`
+    //
+    //
+    //     // const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //     // const photoSessionsCollectionRef = collection(userDocRef, "sessions");
+    //     // console.log(photoSessionsCollectionRef);
+    //
+    //     try {
+    //         const coordinates = await getCoordinates(geoCodeURL);
+    //         const newEvent = {
+    //             coordinates: coordinates,
+    //             date: {
+    //                 date: date,
+    //                 time: time,
+    //             },
+    //             info: info,
+    //             kit: kit,
+    //             location: {
+    //                 city: city,
+    //                 country: country,
+    //                 houseNumber: houseNum,
+    //                 poi: poi,
+    //                 postalCode: postalCode,
+    //                 street: street,
+    //             },
+    //             model: {
+    //                 email: email,
+    //                 name: name,
+    //                 phone: phone,
+    //                 surname: surname,
+    //             },
+    //             type: type,
+    //             isActive: status,
+    //         };
+    //         await createNewEvent(newEvent);
+    //
+    //         // Reset form values here
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    //
+    //     const getCoordinates = async (geoCodeURL) => {
+    //         try {
+    //             const response = await fetch(geoCodeURL);
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+    //
+    //             const data = await response.json();
+    //
+    //             if (data.length === 0 || data[0].lon === undefined || data[0].lat === undefined) {
+    //                 console.log('Incorrect data or coordinates dont exist');
+    //                 return ['0', '0'];
+    //             } else {
+    //                 const coordinates = [data[0].lat, data[0].lon];
+    //                 console.log(coordinates);
+    //                 return coordinates;
+    //             }
+    //         } catch (error) {
+    //             console.error('Data fetch error:', error);
+    //             return ['0', '0'];
+    //         }
+    //     }
+    //
+    //     const createNewEvent = async (newEvent) => {
+    //         try {
+    //             const userDocRef = doc(db, "users", auth.currentUser.uid);
+    //             const photoSessionsCollectionRef = collection(userDocRef, "sessions");
+    //             await addDoc(photoSessionsCollectionRef, newEvent);
+    //             setStatus(true);
+    //
+    //             // Reset your form values here
+    //             setType('');
+    //             setKit('');
+    //             setStreet('');
+    //             setHouseNum('');
+    //             setPostalCode('');
+    //             setCity('');
+    //             setCountry('');
+    //             setPoi('');
+    //             setDate('');
+    //             setTime('');
+    //             setName('');
+    //             setSurname('');
+    //             setPhone('');
+    //             setEmail('');
+    //             setInfo('');
+    //             setActionModal(true);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
 
-    }
+        // const coordinates = await getCoordinates();
+        //
+        // const createNewEvent = async () => {
+        //     try {
+        //         const coordinates = await getCoordinates(); // Wait for coordinates
+        //         const newEvent = {
+        //             coordinates: coordinates,
+        //             date: {
+        //                 date: date,
+        //                 time: time
+        //             },
+        //             info: info,
+        //             kit: kit,
+        //             location: {
+        //                 city: city,
+        //                 country: country,
+        //                 houseNumber: houseNum,
+        //                 poi: poi,
+        //                 postalCode: postalCode,
+        //                 street: street
+        //             },
+        //             model: {
+        //                 email: email,
+        //                 name: name,
+        //                 phone: phone,
+        //                 surname: surname
+        //             },
+        //             type: type,
+        //             isActive: status
+        //         };
+        //     } catch (error) {
+        //             console.log(error)
+        //         }
+
+
+                // try {
+                //     await addDoc(photoSessionsCollectionRef, newEvent)
+                //
+                //     setStatus(true);
+                //     setType('');
+                //     setKit('');
+                //     setStreet('');
+                //     setHouseNum('');
+                //     setPostalCode('');
+                //     setCity('');
+                //     setCountry('');
+                //     setPoi('');
+                //     setDate('');
+                //     setTime('');
+                //     setName('');
+                //     setSurname('');
+                //     setPhone('');
+                //     setEmail('');
+                //     setInfo('');
+                //     setActionModal(true)
+                // } catch (error) {
+                //     console.log(error)
+                // }
+
+    //     }
+    //
+    //
+    //
+    //
+    //
+    // }
 
     const getKits = async () => {
 

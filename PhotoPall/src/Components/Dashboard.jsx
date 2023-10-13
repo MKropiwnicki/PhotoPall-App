@@ -8,7 +8,7 @@ export const Dashboard = () => {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
-    console.log(user.uid);
+    console.log(user.email);
 
     const handleHome = () => {
         navigate('/dashboard')

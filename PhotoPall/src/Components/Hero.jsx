@@ -6,7 +6,7 @@ import {faCalendarDays, faCamera, faGears} from "@fortawesome/free-solid-svg-ico
 export const Hero = () => {
     return (
         <section className='hero'>
-            <AnimatePresence>
+
                 <motion.div className='logo-container'
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ rotate: 0, scale: 1, opacity: 1 }}
@@ -49,7 +49,6 @@ export const Hero = () => {
                     </motion.div>
 
                 </motion.div>
-            </AnimatePresence>
-
+            <p className='link'><a href="https://www.freepik.com/free-vector/air-balloons-flying-night-sky-with-full-moon-clouds-mountains_12682462.htm?query=vector landscape ballons">Image by upklyak</a> on Freepik</p>
         </section>)
 }

@@ -71,54 +71,243 @@
   }
 
   .app-body-container {
-    width: 95%;
-    height: 92vh;
-    margin: 0 auto;
+    width: 100%;
+    min-height: 90vh;
+    margin: 2rem auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    //background: rgba(255, 255, 255, 0.04);
+    background: transparent;
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    gap: 2rem;
 
-    .tile-normal {
-      width: 25%;
-      height: 80%;
+    .tile-container {
+      width: 50%;
+      height: 80vh;
       display: flex;
       flex-direction: column;
-     align-items: center;
+      background: rgba(2, 0, 43, 0.7);
+      align-items: center;
       gap: 2rem;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid colors.$accent;
+      padding: 4rem 4rem 6rem 4rem;
       -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
       border-radius: 40px;
       transition: 0.2s ease-in-out;
 
-      &:hover {
-      transform: scale(1.05);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-        background: rgba(255, 255, 255, 0.2);
+      .events-counter {
 
-    }
+        h2 {
+          font-size: 2rem;
+          color: white;
+          font-family: variables.$Exo;
+          text-align: center;
 
-      .action-tile {
-        width: 300px;
-        height: 300px;
-        background: rgba(255, 255, 255, 0.1);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 40px;
-        transition: 0.2s ease-in-out;
+          span {
+            color: colors.$accent
+          };
 
-        &:hover {
-          box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+        }
+      }
+
+    .gear {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      h2 {
+        font-size: 2rem;
+        color: white;
+        font-family: variables.$Exo;
+        text-align: center;
+
+        span {
+          color: colors.$accent
+        };
+
+      }
+
+      .gear-stats-wrapper {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 4rem;
+
+        .gear-item {
+          margin: 3rem;
+          display: flex;
+          align-items: center;
+
+
+          svg {
+            font-size: 5rem;
+            color: white;
+            margin: 0 10px 0 0;
+          }
+
+          h2 {
+            color: colors.$accent;
+            font-size: 3rem;
+          }
         }
       }
     }
 
-    .tile-big {
-      width: 35%;
-      height: 80%;
-      background: rgba(255, 255, 255, 0.1);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 40px;
+      .event-tile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+
+        .no-eventIcon {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 50%;
+
+          svg {
+            color: white;
+            font-size: 5rem;
+            padding: 2rem;
+          }
+        }
+
+        .no-event {
+          width: 75%;
+          h2{
+            color: white;
+            font-size: 2rem;
+            font-family: variables.$Exo;
+            font-weight: 700;
+            padding: 2rem;
+          }
+        }
+        .closest-event-info-container {
+          width: 75%;
+          height: 15rem;
+          display: flex;
+          justify-content: space-around;
+          align-items: flex-start;
+
+
+          .block {
+            width: inherit;
+            display: flex;
+            justify-content: flex-start;
+            color: white;
+            font-family: variables.$Exo;
+
+            .location {
+              margin-top: 1rem;
+
+              h2 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+              }
+
+              ul > li {
+                margin-top: 0.9rem;
+
+                span {
+                  font-weight: 600;
+                  color: colors.$accent;
+                }
+              }
+            }
+          }
+        }
+
+        p {
+          color: white;
+          font-family: variables.$Exo;
+          font-weight: 700;
+          font-size: 4rem;
+        }
+
+        .eventIcon {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 50%;
+
+          svg {
+            color: white;
+            font-size: 2rem;
+          }
+          .event-info-box {
+            h2 {
+              font-family: variables.$Exo;
+              color: white;
+              font-size: 1.5rem;
+              margin: 1rem 0 1.5rem 1rem;
+              text-align: center;
+            }
+
+            .type {
+              font-size: 2rem;
+              font-weight: 700;
+              text-align: center;
+            }
+
+          }
+        }
+
+      }
+
+      .weather-tile {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        p {
+          color: white;
+          font-family: variables.$Exo;
+          font-weight: 700;
+          font-size: 2.5rem;
+          text-align: center;
+        }
+
+        .weather-icon, .temp {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 3rem;
+          svg {
+            color: white;
+            font-size: 10rem;
+          }
+        }
+        .temp {
+          display: flex;
+          flex-direction: column;
+
+          p {
+            color: white;
+            font-size: 4rem;
+            font-family: variables.$DaysOne;
+          }
+
+          span {
+            margin-top: 1.5rem;
+            color: white;
+            font-size: 1rem;
+            font-family: variables.$Exo;
+          }
+
+          .no-weather {
+            color: white;
+            font-size: 2rem;
+            font-family: variables.$Exo;
+          }
+        }
+      }
     }
   }
 }
+

@@ -3,10 +3,9 @@ import {auth, db} from "../firebase.js";
 import { collection, getDocs, query } from "firebase/firestore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-    faRectangleList, faCamera, faCircleHalfStroke, faCalendarDays
+    faCalendarDays
 } from "@fortawesome/free-solid-svg-icons";
 import {AnimatePresence, easeInOut, motion} from "framer-motion";
-import {DeleteButton} from "./DeleteButton.jsx";
 import {DeleteModal} from "./DeleteModal.jsx";
 import {EventIcon} from "./EventIcon.jsx";
 import {EventDetails} from "./EventDetails.jsx";
@@ -33,14 +32,10 @@ export const EventsBody = () => {
     }, [refresh]);
 
 
-    // const toggleDeleteBtn = (index) => {
-    //     setBtnVis(index);
-    // }
-
     const toggleDeleteBtn = (index) => {
-        // Toggle the clicked state for the event tile
+
         if (btnVis === index) {
-            setBtnVis(null); // Close if already open
+            setBtnVis(null);
         } else {
             setBtnVis(index);
         }
@@ -75,8 +70,8 @@ export const EventsBody = () => {
                 const country = data.location.country;
                 const houseNumber = data.location.houseNumber;
                 const postalCode = data.location.postalCode;
-                const street = data.location.postalCode;
-                const poi = data.location.postalCode;
+                const street = data.location.street;
+                const poi = data.location.poi;
                 const modelName = data.model.name;
                 const modelSurname = data.model.surname;
                 const modelPhone = data.model.phone;
@@ -102,8 +97,7 @@ export const EventsBody = () => {
                     type,
                     isActive });
             });
-            // const camerasArr = gearArr.filter((gear) => gear.type === 'camera')
-
+            eventsArr.sort((a, b) => new Date(a.date) - new Date(b.date));
             setEventsCollData(eventsArr);
         } catch (error) {
             console.error("Error fetching sessions:", error);
@@ -132,36 +126,6 @@ export const EventsBody = () => {
                         <DeleteModal toggleDeleteModal={toggleDeleteModal} content='Event deleted.' title='Close'/>
                     )}
 
-                    {/*{eventsCollData.map((eventData) => (*/}
-                    {/*    <motion.div key={eventData.id} className='event-tile'*/}
-                    {/*                onMouseEnter={() => toggleDeleteBtn(eventData.id)}*/}
-                    {/*                onMouseLeave={() => toggleDeleteBtn(null)}>*/}
-                    {/*        <motion.div className='event-tile-content'>*/}
-                    {/*            <EventIcon condition={eventData.type} />*/}
-                    {/*            <h2>{eventData.type}</h2>*/}
-                    {/*            <h2>{eventData.date} <br/> {eventData.time}</h2>*/}
-                    {/*        </motion.div>*/}
-                    {/*        {btnVis === eventData.id && (*/}
-                    {/*            <>*/}
-                    {/*                <EventDetails kit={eventData.kit}*/}
-                    {/*                              info={eventData.info}*/}
-                    {/*                              city={eventData.city}*/}
-                    {/*                              country={eventData.country}*/}
-                    {/*                              houseNumber={eventData.houseNumber}*/}
-                    {/*                              postalCode={eventData.postalCode}*/}
-                    {/*                              street={eventData.street}*/}
-                    {/*                              poi={eventData.poi}*/}
-                    {/*                              modelName={eventData.modelName}*/}
-                    {/*                              modelSurname={eventData.modelSurname}*/}
-                    {/*                              modelPhone={eventData.modelName}*/}
-                    {/*                              modelEmail={eventData.modelEmail}*/}
-                    {/*                              isActive={eventData.isActive} />*/}
-                    {/*                <DeleteButton itemID={eventData.id} visibility={setRefresh} />*/}
-                    {/*            </>*/}
-
-                    {/*        )}*/}
-                    {/*    </motion.div>*/}
-                    {/*))}*/}
                     {eventsCollData.map((eventData) => (
                         <motion.div layout transition={{ duration: 0.3 }} key={eventData.id} className='event-tile'
                                     onClick={() => toggleDeleteBtn(eventData.id)}
