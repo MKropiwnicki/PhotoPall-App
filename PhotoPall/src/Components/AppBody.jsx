@@ -27,6 +27,8 @@ export const AppBody = () => {
     const [gearCounter, setGearCounter] = useState([]);
 
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -36,6 +38,38 @@ export const AppBody = () => {
                 console.error("Error fetching data:", error);
             }
         };
+
+        // if (eventData.length > 0) {
+        //             const getData = async () => {
+        //                 try {
+        //                     await getWeatherData(eventData[0].lat, eventData[0].lon)
+        //                 } catch (error) {
+        //                     console.error("Error fetching weather data:", error);
+        //                 }
+        //             };
+        //             getData();
+        //         }
+        //
+        //         if (eventData.length > 0) {
+        //             const firstEvent = eventData[0];
+        //             showEvent(
+        //                 firstEvent.date,
+        //                 firstEvent.time,
+        //                 firstEvent.info,
+        //                 firstEvent.city,
+        //                 firstEvent.country,
+        //                 firstEvent.houseNumber,
+        //                 firstEvent.postalCode,
+        //                 firstEvent.street,
+        //                 firstEvent.poi,
+        //                 firstEvent.modelName,
+        //                 firstEvent.modelSurname,
+        //                 firstEvent.modelPhone,
+        //                 firstEvent.modelEmail,
+        //                 firstEvent.type
+        //             );
+        //             console.log(firstEvent.type)
+        //         }
         fetchData();
     }, []);
 
@@ -74,7 +108,7 @@ export const AppBody = () => {
         }
 
 
-    }, []);
+    }, [eventData]);
 
 
     const getEvents = async () => {
@@ -312,7 +346,7 @@ export const AppBody = () => {
                     </div>
 
                     <div className='event-tile'>
-                        {eventData.length > 0 ? (
+                        {eventData.length > 0 && data && data.type ? (
                                 <div className='eventIcon'>
                                     <EventIcon condition={data.type} />
                                 </div>
@@ -322,7 +356,7 @@ export const AppBody = () => {
                             </div>
                             )}
 
-                        {eventData.length > 0 ? (
+                        {eventData.length > 0 && data && data.type ? (
                             <div className='event-info-box'>
                                 <h2 className='type'>{data.type}</h2>
                                 <h2>{data.date}</h2>
@@ -330,7 +364,7 @@ export const AppBody = () => {
                             </div>
                         ) : null }
 
-                        {eventData.length > 0 ? (
+                        {eventData.length > 0 && data && data.type ? (
                             <ClosestEvent
                                 city={data.city}
                                 country={data.country}

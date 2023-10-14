@@ -235,27 +235,31 @@
           flex-direction: column;
           align-items: center;
           width: 50%;
+          height: auto;
+
 
           svg {
             color: white;
+            font-size: 4rem;
+          }
+
+        }
+        .event-info-box {
+
+          h2 {
+            font-family: variables.$Exo;
+            color: white;
+            font-size: 1.5rem;
+            margin: 1rem 0 1.5rem 1rem;
+            text-align: center;
+          }
+
+          .type {
             font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
           }
-          .event-info-box {
-            h2 {
-              font-family: variables.$Exo;
-              color: white;
-              font-size: 1.5rem;
-              margin: 1rem 0 1.5rem 1rem;
-              text-align: center;
-            }
 
-            .type {
-              font-size: 2rem;
-              font-weight: 700;
-              text-align: center;
-            }
-
-          }
         }
 
       }
