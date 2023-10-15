@@ -147,7 +147,7 @@ export const EventsBody = () => {
                                                   poi={eventData.poi}
                                                   modelName={eventData.modelName}
                                                   modelSurname={eventData.modelSurname}
-                                                  modelPhone={eventData.modelName}
+                                                  modelPhone={eventData.modelPhone}
                                                   modelEmail={eventData.modelEmail}
                                                   isActive={eventData.isActive} />
                                     <DeleteEventButton toggleDeleteModal={setDeleteModal} itemID={eventData.id} visibility={setRefresh} />

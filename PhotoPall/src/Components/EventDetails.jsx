@@ -12,9 +12,9 @@ export const EventDetails = ({info, kit, city, country, houseNumber, postalCode,
                  <h2>Location:</h2>
                  <ul>
                      <li>Street: <span>{street}</span> </li>
-                     <li>House number:<span>{houseNumber}</span></li>
+                     <li>House number: <span>{houseNumber}</span></li>
                      <li>Postal code: <span>{postalCode}</span></li>
-                     <li>City:<span>{city}</span> </li>
+                     <li>City: <span>{city}</span> </li>
                      <li>Country: <span>{country}</span></li>
                      <li>Point of interest: <span>{poi}</span></li>
                  </ul>
